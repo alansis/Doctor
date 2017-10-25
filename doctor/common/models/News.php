@@ -45,4 +45,8 @@ class News extends \yii\db\ActiveRecord
             'author' => 'Author',
         ];
     }
+
+    public function setAuthor($userName){
+        return $this->author = $userName;
+    }
 }

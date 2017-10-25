@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 <div class="form_for_call_doctor">
 
     <?php $form = ActiveForm::begin(); ?>
+
         <?= $form->field($model, 'Name')
             ->textInput(['placeholder' => 'Ваше имя', 'class' =>'form-control text-left']) ?>
         <?= $form->field($model, 'Subname')

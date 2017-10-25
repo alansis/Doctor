@@ -3,18 +3,40 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+use yii\bootstrap\Carousel;
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
 
     <div class="body-content">
+
+        <div class="Carousel">
+            <?php
+            echo Carousel::widget ( [
+                'items' => [
+                    [
+                        'content' => '<img style="width:1200px;height:296px" src="../../../../doctor/public_html/upload/img_for_slader/01.jpg"/>',
+                        'caption' => '<h2>Yii Gii</h2><p>Удобный встроенный генератор кода. Модули, модели на основе таблиц в БД и, конечно же, CRUD</p>',
+                        'options' => []
+                    ],
+                    [
+                        'content' => '<img style="width:1200px;height:296px" src="../../../../doctor/public_html/upload/img_for_slader/mountains1.jpg"/>',
+                        'caption' => '<h2>Отличный отладчик</h2><p>Легко подключается, помнит все запросы http, БД и логи</p>',
+                        'options' => []
+                    ],
+                    [
+                        'content' => '<img style="width:1200px;height:296px" src="../../../../doctor/public_html/upload/img_for_slader/werwer.jpg"/>',
+                        'caption' => '<h2>Быстрый старт</h2><p>Установка и обновление через composer</p>',
+                        'options' => []
+                    ]
+                ],
+                'options' => [
+                    'style' => 'width:auto;' // Задаем ширину контейнера
+                ]
+            ]);
+            ?>
+        </div>
+
 
         <div class="row">
             <div class="col-lg-4">

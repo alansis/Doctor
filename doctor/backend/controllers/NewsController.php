@@ -8,6 +8,7 @@ use common\models\NewsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\User;
 
 /**
  * NewsController implements the CRUD actions for News model.
@@ -64,12 +65,16 @@ class NewsController extends Controller
     public function actionCreate()
     {
         $model = new News();
+        $user = new User();
+        $author = $model::find()
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->setAuthor($user);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'author' => $author,
             ]);
         }
     }

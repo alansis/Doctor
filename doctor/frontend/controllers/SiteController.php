@@ -16,6 +16,7 @@ use common\models\Callfordoctor;
 use common\models\Workers;
 use common\models\Department;
 use common\models\User;
+use common\models\Placemaps;
 
 
 /**
@@ -244,9 +245,18 @@ class SiteController extends Controller
 
     public function actionMaps()
     {
-        $model = new User();
+        $model = new Placemaps();
+        $basePlase = 'Ринок, 1, Львів';
+
+        $address = Yii::$app->request->post('Placemaps');
+
+        $modelSelect = $model::find()->where(['id' => $address['name_of_setting']])->one();
+
         return $this->render('maps', [
-            'model' => $model
+            'model' => $model,
+            'basePlase' => $basePlase,
+            'address' => $address,
+            'modelSelect' => $modelSelect,
         ]);
     }
 
