@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\News;
 use common\models\NewsSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,16 @@ class NewsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'find'],
+                        'allow' => true,
+                        'roles' => ['canAdmin'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -65,16 +76,17 @@ class NewsController extends Controller
     public function actionCreate()
     {
         $model = new News();
-        $user = new User();
-        $author = $model::find()
+        $author = Yii::$app->user->identity->username;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->setAuthor($user);
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post())){
+            $model->setAuthor($author);
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+        else {
             return $this->render('create', [
                 'model' => $model,
-                'author' => $author,
             ]);
         }
     }
@@ -125,5 +137,36 @@ class NewsController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionRole(){
+       /* $admin = Yii::$app->authManager->createRole('admin');
+        $admin->description = 'Адміністратор';
+        Yii::$app->authManager->add($admin);
+
+        $content = Yii::$app->authManager->createRole('content');
+        $content->description = 'Контент менеджер';
+        Yii::$app->authManager->add($content);
+
+        $user = Yii::$app->authManager->createRole('user');
+        $user->description = 'Користувач';
+        Yii::$app->authManager->add($user);
+        return 123;
+
+
+        $permit = Yii::$app->authManager->createPermission('canAdmin');
+        $permit->description = 'Право входа в Адмінку';
+        Yii::$app->authManager->add($permit);
+
+        $role_admin = Yii::$app->authManager->getRole('admin');
+        $role_content = Yii::$app->authManager->getRole('content');
+        $permit = Yii::$app->authManager->getPermission('canAdmin');
+        Yii::$app->authManager->addChild($role_admin, $permit);
+        Yii::$app->authManager->addChild($role_content, $permit);
+        */
+        $userRole = Yii::$app->authManager->getRole('admin');
+        Yii::$app->authManager->assign($userRole, Yii::$app->user->getId());
+        // Yii::$app->authManager->assign($userRole, 1); Можна передати конкретний ID шнік користувача
+        return 123;
     }
 }

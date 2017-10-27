@@ -22,11 +22,16 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['canAdmin'],
+                    ],
+                    [
+                        'actions' => ['error', 'login'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -75,8 +80,18 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post())){
+            if($model->login()) {
+                if(!Yii::$app->user->can('canAdmin')){
+                    $name = '403';
+                    $message = 'ForbiddenHttpException';
+                    return $this->render('error', [
+                        'name' => $name,
+                        'message' => $message,
+                    ]);
+                }
+                return $this->goBack();
+            }
         } else {
             return $this->render('login', [
                 'model' => $model,
@@ -95,4 +110,6 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+
 }

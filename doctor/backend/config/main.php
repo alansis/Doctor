@@ -10,7 +10,7 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log','gii'],
+    'bootstrap' => ['log','gii', 'debug'],
     'modules' => [
 		'gii' => [
             'class' => 'yii\gii\Module',
@@ -48,7 +48,7 @@ return [
             'rules' => [
             ],
         ],
-        
+
     ],
     'params' => $params,
 ];

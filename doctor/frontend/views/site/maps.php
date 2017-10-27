@@ -10,6 +10,9 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
+$this->title = 'Карти';
+$this->params['breadcrumbs'][] = $this->title;
+
 $placemaps = \common\models\Placemaps::find()->asArray()->all();
 $result = ArrayHelper::map($placemaps, 'id', 'name_of_setting');
 ?>

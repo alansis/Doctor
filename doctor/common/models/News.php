@@ -29,7 +29,9 @@ class News extends \yii\db\ActiveRecord
     {
         return [
             [['content'], 'string'],
+            [['content'], 'required'],
             [['title', 'author'], 'string', 'max' => 255],
+            [['title', 'author'], 'required'],
         ];
     }
 
@@ -39,10 +41,10 @@ class News extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'content' => 'Content',
-            'author' => 'Author',
+            'id' => 'Номер',
+            'title' => 'Назва',
+            'content' => 'Текст',
+            'author' => 'Автор',
         ];
     }
 

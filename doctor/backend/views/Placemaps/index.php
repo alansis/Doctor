@@ -4,18 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\WorkersSearch */
+/* @var $searchModel common\models\PlacemapsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Workers';
+$this->title = 'Placemaps';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="workers-index">
+<div class="placemaps-index">
 
+    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Добавити працівника', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Placemaps', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,13 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'department_id',
-            'Name',
-            'Subname',
-            'Surname',
-            // 'Passport_id',
-            // 'Specialization',
-            // 'Position',
+            'address',
+            'name_of_setting',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -29,7 +29,9 @@ class Department extends \yii\db\ActiveRecord
     {
         return [
             [['year', 'count_of_personal'], 'integer'],
+            [['year', 'count_of_personal'], 'required'],
             [['title'], 'string', 'max' => 255],
+            [['title'], 'string', 'required' ],
         ];
     }
 
@@ -39,10 +41,10 @@ class Department extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'year' => 'Year',
-            'count_of_personal' => 'Count Of Personal',
+            'id' => 'Номер',
+            'title' => 'Назва',
+            'year' => 'Рік заснування',
+            'count_of_personal' => 'Кількість персоналу',
         ];
     }
 
