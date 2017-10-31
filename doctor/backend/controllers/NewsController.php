@@ -2,13 +2,18 @@
 
 namespace backend\controllers;
 
+use yii\helpers\Url;
 use Yii;
 use common\models\News;
 use common\models\NewsSearch;
+use yii\base\DynamicModel;
 use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 use yii\web\User;
 
 /**
@@ -26,7 +31,7 @@ class NewsController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'find'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'find','save-redactor-img'],
                         'allow' => true,
                         'roles' => ['canAdmin'],
                     ],
@@ -139,6 +144,51 @@ class NewsController extends Controller
         }
     }
 
+    public function actionSaveRedactorImg($sub = 'main')
+    {
+        $this->enableCsrfValidation = false;
+        if (Yii::$app->request->isPost)
+        {
+            $dir = Yii::getAlias('@images') . '/' . $sub . '/'; # Передасться в змінну sub значення з View, щоб створилась папка, в оточенні Alias, і туда будуть кидатись картинки
+
+            if (!file_exists($dir)) {
+                FileHelper::createDirectory($dir);
+            }
+
+            $result_link = str_replace('/admin', '', Url::home(true) . 'upload/' . $sub . '/');
+            $file = UploadedFile::getInstanceByName('file');
+            $model = new DynamicModel(compact('file'));
+            $model->addRule('file', 'image')->validate(); # Проводиться валідація, чи це картинка
+
+            if ($model->hasErrors()) {
+                $result = [
+                    'error' => $model->getFirstError('file')
+                ];
+            } else {
+                $model->file->name = strtotime('now') . '_' . Yii::$app->getSecurity()->generateRandomString(15) . '.' . $model->file->extension;
+                if ($model->file->saveAs($dir . $model->file->name))
+                {
+                    // $imag = Yii::$app->image->load($dir . $model->file->name);
+                    // $imag->resize($width = 500, $height = 200, \yii\image\drivers\Image::PRECISE)->save($dir . $model->file->name, 80);
+                    $result = [
+                        'filelink' => $result_link . $model->file->name,
+                        'filename' => $model->file->name
+                    ];
+                }
+                else {
+                    $result = [
+                        'error' => Yii::t('vova07/imperavi', 'ERROR_CAN_NOT_UPLOAD_FILE')
+                    ];
+                }
+            }
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return $result;
+        } else {
+            throw new BadRequestHttpException('Only POST is allowed');
+        }
+    }
+
+
     public function actionRole(){
        /* $admin = Yii::$app->authManager->createRole('admin');
         $admin->description = 'Адміністратор';
@@ -163,10 +213,11 @@ class NewsController extends Controller
         $permit = Yii::$app->authManager->getPermission('canAdmin');
         Yii::$app->authManager->addChild($role_admin, $permit);
         Yii::$app->authManager->addChild($role_content, $permit);
-        */
+
         $userRole = Yii::$app->authManager->getRole('admin');
         Yii::$app->authManager->assign($userRole, Yii::$app->user->getId());
         // Yii::$app->authManager->assign($userRole, 1); Можна передати конкретний ID шнік користувача
         return 123;
+        */
     }
 }

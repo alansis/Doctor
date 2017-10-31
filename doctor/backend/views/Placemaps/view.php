@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Placemaps */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Placemaps', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Місця на карті', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="placemaps-view">

@@ -2,7 +2,10 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\base\DynamicModel;
 use yii\base\InvalidParamException;
+use yii\helpers\FileHelper;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -17,7 +20,10 @@ use common\models\Workers;
 use common\models\Department;
 use common\models\User;
 use common\models\Placemaps;
-
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
+use common\models\News;
+use yii\data\ActiveDataProvider;
 
 /**
  * Site controller
@@ -259,6 +265,32 @@ class SiteController extends Controller
             'modelSelect' => $modelSelect,
         ]);
     }
+
+    public function actionNews(){
+        $model = new News();
+        $query = $model::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+        return $this->render('allnews', [
+            'news' => $query,
+            'listDataProvider' => $dataProvider
+        ]);
+    }
+
+    public  function actionNewsOne($id){
+        $model = new News();
+        if ( $news = $model::find()->Where(['id' => $id])->one()) {
+            return $this->render('Id_news', ['news' => $news]);
+        }
+        throw new NotFoundHttpException('Такої новини не знайдено');
+
+    }
+
 
 
 }

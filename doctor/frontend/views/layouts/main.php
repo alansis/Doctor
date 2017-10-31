@@ -40,6 +40,7 @@ AppAsset::register($this);
         ['label' => 'Про нас', 'url' => ['/site/about']],
         ['label' => 'Контакти', 'url' => ['/site/contact']],
         ['label' => 'Карти', 'url' => ['/site/maps']],
+        ['label' => 'Новини', 'url' => ['/site/news']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Зареєструватись', 'url' => ['/site/signup']];

@@ -31,7 +31,7 @@ class Department extends \yii\db\ActiveRecord
             [['year', 'count_of_personal'], 'integer'],
             [['year', 'count_of_personal'], 'required'],
             [['title'], 'string', 'max' => 255],
-            [['title'], 'string', 'required' ],
+            [['title'], 'required' ],
         ];
     }
 
