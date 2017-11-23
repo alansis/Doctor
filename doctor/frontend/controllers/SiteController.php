@@ -24,7 +24,6 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use common\models\News;
 use yii\data\ActiveDataProvider;
-
 /**
  * Site controller
  */
@@ -291,6 +290,13 @@ class SiteController extends Controller
 
     }
 
-
+    public function actionAjax(){
+	if (Yii::$app->request->isAjax) {
+		$dateFromFacebook = Yii::$app->getRequest()->getBodyParams(); // Масив даних з фейса в масиві розбити і кудись треба закинути
+		var_dump($dateFromFacebook['name']);
+    }else{
+	 return $this->redirect('index');
+    }
+	}
 
 }

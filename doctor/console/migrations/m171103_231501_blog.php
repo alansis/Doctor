@@ -2,9 +2,9 @@
 
 use yii\db\Migration;
 
-class m171017_193027_blog extends Migration
+class m171103_231501_blog extends Migration
 {
-    public function safeUp()
+   public function safeUp()
     {
 	$this->createTable('news', [
             'id' => $this->primaryKey()->notNull(),
@@ -22,7 +22,7 @@ class m171017_193027_blog extends Migration
         return false;
     }
 
-/*    
+    /*
     // Use up()/down() to run migration code without a transaction.
     public function up()
     {
@@ -31,8 +31,9 @@ class m171017_193027_blog extends Migration
 
     public function down()
     {
+        echo "m171103_231501_blog cannot be reverted.\n";
 
+        return false;
     }
-*/
-
+    */
 }

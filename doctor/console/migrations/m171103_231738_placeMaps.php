@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m171022_220701_placeMaps extends Migration
+class m171103_231738_placeMaps extends Migration
 {
     public function safeUp()
     {
@@ -28,7 +28,7 @@ class m171022_220701_placeMaps extends Migration
 
     public function down()
     {
-        echo "m171022_220701_placeMaps cannot be reverted.\n";
+        echo "m171103_231738_placeMaps cannot be reverted.\n";
 
         return false;
     }

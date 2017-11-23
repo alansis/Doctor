@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m171018_195555_callfordoctor extends Migration
+class m171103_231628_callfordoctor extends Migration
 {
     public function safeUp()
     {
@@ -37,7 +37,7 @@ class m171018_195555_callfordoctor extends Migration
 
     public function down()
     {
-        echo "m171018_195555_callfordoctor cannot be reverted.\n";
+        echo "m171103_231628_callfordoctor cannot be reverted.\n";
 
         return false;
     }

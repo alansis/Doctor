@@ -24,10 +24,11 @@ class DepartmentController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
+
                     [
                         'actions' => ['index', 'view', 'create', 'update', 'delete', 'find'],
                         'allow' => true,
-                        'roles' => ['canAdmin'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],

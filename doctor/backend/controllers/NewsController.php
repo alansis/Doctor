@@ -31,11 +31,17 @@ class NewsController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'find','save-redactor-img'],
                         'allow' => true,
-                        'roles' => ['canAdmin'],
+                        'actions' => ['ajax'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'find','save-redactor-img', 'role', 'ajax'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
+
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -86,7 +92,7 @@ class NewsController extends Controller
         if ($model->load(Yii::$app->request->post())){
             $model->setAuthor($author);
             if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect('index');
             }
         }
         else {
@@ -189,35 +195,52 @@ class NewsController extends Controller
     }
 
 
+
+
     public function actionRole(){
-       /* $admin = Yii::$app->authManager->createRole('admin');
-        $admin->description = 'Адміністратор';
-        Yii::$app->authManager->add($admin);
+/*
+                $admin = Yii::$app->authManager->createRole('admin');
+                $admin->description = 'Адміністратор';
+                Yii::$app->authManager->add($admin);
 
-        $content = Yii::$app->authManager->createRole('content');
-        $content->description = 'Контент менеджер';
-        Yii::$app->authManager->add($content);
+                $content = Yii::$app->authManager->createRole('content');
+                $content->description = 'Контент менеджер';
+                Yii::$app->authManager->add($content);
 
-        $user = Yii::$app->authManager->createRole('user');
-        $user->description = 'Користувач';
-        Yii::$app->authManager->add($user);
-        return 123;
+                $doctor = Yii::$app->authManager->createRole('doctor');
+                $doctor->description = 'Лікар';
+                Yii::$app->authManager->add($doctor);
+                return 1235;
+
+                $user = Yii::$app->authManager->createRole('user');
+                $user->description = 'Користувач';
+                Yii::$app->authManager->add($user);
+
+                $permit = Yii::$app->authManager->createPermission('canAdmin');
+                $permit->description = 'Право входа в Адмінку';
+                Yii::$app->authManager->add($permit);
+
+                $doctor = Yii::$app->authManager->createPermission('canADoctor');
+                $doctor->description = 'Право працювати з хвароми';
+                Yii::$app->authManager->add($doctor);
+*/
 
 
-        $permit = Yii::$app->authManager->createPermission('canAdmin');
-        $permit->description = 'Право входа в Адмінку';
-        Yii::$app->authManager->add($permit);
+                //$role_admin = Yii::$app->authManager->getRole('admin');
+               // $role_content = Yii::$app->authManager->getRole('content');
+               // $permit = Yii::$app->authManager->getPermission('canAdmin');
+                $role_doctor = Yii::$app->authManager->getRole('doctor');
+                $permit1 = Yii::$app->authManager->getPermission('canADoctor');
+               // Yii::$app->authManager->addChild($role_admin, $permit);
+               // Yii::$app->authManager->addChild($role_content, $permit);
+                Yii::$app->authManager->addChild($role_doctor, $permit1);
 
-        $role_admin = Yii::$app->authManager->getRole('admin');
-        $role_content = Yii::$app->authManager->getRole('content');
-        $permit = Yii::$app->authManager->getPermission('canAdmin');
-        Yii::$app->authManager->addChild($role_admin, $permit);
-        Yii::$app->authManager->addChild($role_content, $permit);
+                $userRole = Yii::$app->authManager->getRole('admin');
+                Yii::$app->authManager->assign($userRole, Yii::$app->user->getId());
+                // Yii::$app->authManager->assign($userRole, 1); //Можна передати конкретний ID шнік користувача
+                return 123;
 
-        $userRole = Yii::$app->authManager->getRole('admin');
-        Yii::$app->authManager->assign($userRole, Yii::$app->user->getId());
-        // Yii::$app->authManager->assign($userRole, 1); Можна передати конкретний ID шнік користувача
-        return 123;
-        */
+
+
     }
 }

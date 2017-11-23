@@ -40,6 +40,7 @@ class Workers extends \yii\db\ActiveRecord
             [['Name', 'Subname', 'Surname', 'Passport_id', 'Specialization', 'Position'], 'required'],
             [['department_id'], 'exist', 'skipOnError' => true, 'targetClass' => Department::className(), 'targetAttribute' => ['department_id' => 'id']],
             [['department_id'], 'required'],
+            [['user_id'], 'integer'],
         ];
     }
 
@@ -57,6 +58,7 @@ class Workers extends \yii\db\ActiveRecord
             'Passport_id' => 'Номер паспорту',
             'Specialization' => 'Спеціалізація',
             'Position' => 'Посада',
+            'user_id' => 'Лікар'
         ];
     }
 
@@ -67,6 +69,13 @@ class Workers extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Department::className(), ['id' => 'department_id']);
     }
+
+    public function addRole($ThisUser){
+        $doctorRole = Yii::$app->authManager->getRole('doctor');
+        Yii::$app->authManager->assign($doctorRole, $ThisUser->id);
+    }
+
+
 
 
 }

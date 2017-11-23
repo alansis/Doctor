@@ -1,22 +1,20 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
-use common\models\LoginForm;
-use frontend\models\SignupForm;
-use Yii;
 use common\models\Workers;
-use common\models\WorkersSearch;
+use Yii;
+use common\models\Schedule;
+use common\models\ScheduleSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\User;
 
 /**
- * WorkersController implements the CRUD actions for Workers model.
+ * ScheduleController implements the CRUD actions for Schedule model.
  */
-class WorkersController extends Controller
+class ScheduleController extends Controller
 {
     /**
      * @inheritdoc
@@ -25,15 +23,15 @@ class WorkersController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'find'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                    'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                    'allow' => true,
+                    'roles' => ['canAdmin', 'canADoctor'],
                 ],
             ],
+        ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -44,12 +42,12 @@ class WorkersController extends Controller
     }
 
     /**
-     * Lists all Workers models.
+     * Lists all Schedule models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new WorkersSearch();
+        $searchModel = new ScheduleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -59,7 +57,7 @@ class WorkersController extends Controller
     }
 
     /**
-     * Displays a single Workers model.
+     * Displays a single Schedule model.
      * @param integer $id
      * @return mixed
      */
@@ -71,34 +69,34 @@ class WorkersController extends Controller
     }
 
     /**
-     * Creates a new Workers model.
+     * Creates a new Schedule model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $user = new Workers();
-        $model = new SignupForm();
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($ThisUser = $model->signup()) {
-                if ($user->load(Yii::$app->request->post()) && $user->validate()) {
-                    $user->user_id = $ThisUser->id;
-                    $user->save();
-                    $user->addRole($ThisUser);
-                    return $this->redirect(['view', 'id' => $user->id]);
-                }
-            }
-        } else {
+        $model = new Schedule();
+
+        if ($model->load(Yii::$app->request->post() ) && $model->validate()) {
+            $model->doctor_id = $model->getWorker()->id;
+            $model->save();
+
             return $this->render('create', [
                 'model' => $model,
-                'user' => $user
+                'url' => true
+            ]);
+
+        }
+        else {
+            return $this->render('create', [
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Updates an existing Workers model.
+     * Updates an existing Schedule model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -117,7 +115,7 @@ class WorkersController extends Controller
     }
 
     /**
-     * Deletes an existing Workers model.
+     * Deletes an existing Schedule model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -130,15 +128,15 @@ class WorkersController extends Controller
     }
 
     /**
-     * Finds the Workers model based on its primary key value.
+     * Finds the Schedule model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Workers the loaded model
+     * @return Schedule the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Workers::findOne($id)) !== null) {
+        if (($model = Schedule::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

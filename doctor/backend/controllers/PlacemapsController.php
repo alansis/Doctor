@@ -27,7 +27,7 @@ class PlacemapsController extends Controller
                     [
                         'actions' => ['index', 'view', 'create', 'update', 'delete', 'find'],
                         'allow' => true,
-                        'roles' => ['canAdmin'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],

@@ -12,6 +12,7 @@ use yii\bootstrap\Carousel;
 
         <div class="Carousel">
             <?php
+            $s = DIRECTORY_SEPARATOR;
             echo Carousel::widget ( [
                 'items' => [
                     [

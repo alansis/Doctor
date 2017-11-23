@@ -5,12 +5,12 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Workers;
+use common\models\Schedule;
 
 /**
- * WorkersSearch represents the model behind the search form about `common\models\Workers`.
+ * ScheduleSearch represents the model behind the search form about `common\models\Schedule`.
  */
-class WorkersSearch extends Workers
+class ScheduleSearch extends Schedule
 {
     /**
      * @inheritdoc
@@ -18,16 +18,11 @@ class WorkersSearch extends Workers
     public function rules()
     {
         return [
-            [['id', 'department_id'], 'integer'],
-            [['Name', 'Subname', 'Surname', 'Passport_id', 'Specialization', 'Position'], 'safe'],
+            [['id', 'doctor_id'], 'integer'],
+            [['date', 'time_start', 'time_end'], 'safe'],
         ];
     }
-/*
-    public function getNameDepartment(){
-        echo "<pre>";
-        $this->getDepartment();
-    }
-*?
+
     /**
      * @inheritdoc
      */
@@ -46,7 +41,7 @@ class WorkersSearch extends Workers
      */
     public function search($params)
     {
-        $query = Workers::find();
+        $query = Schedule::find();
 
         // add conditions that should always apply here
 
@@ -65,15 +60,11 @@ class WorkersSearch extends Workers
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'department_id' => $this->department_id,
+            'date' => $this->date,
+            'time_start' => $this->time_start,
+            'time_end' => $this->time_end,
+            'doctor_id' => $this->doctor_id,
         ]);
-
-        $query->andFilterWhere(['like', 'Name', $this->Name])
-            ->andFilterWhere(['like', 'Subname', $this->Subname])
-            ->andFilterWhere(['like', 'Surname', $this->Surname])
-            ->andFilterWhere(['like', 'Passport_id', $this->Passport_id])
-            ->andFilterWhere(['like', 'Specialization', $this->Specialization])
-            ->andFilterWhere(['like', 'Position', $this->Position]);
 
         return $dataProvider;
     }

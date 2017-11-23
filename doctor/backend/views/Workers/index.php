@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\WorkersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Workers';
+$this->title = 'Працівники';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workers-index">
@@ -17,13 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Добавити працівника', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+<?php Pjax::begin(); ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'department_id',
             'Name',
             'Subname',
